@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
-using System.IO;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace cg_task3
 {
     public partial class Form1 : Form
     {
-        private Matrix points = new Matrix(0, 0);
+        private Matrix points = new Matrix(0, 4);
         private float zPoint = -1000;
         private Matrix projecttion;
         private Matrix scaleT = new Matrix(4, 4);
@@ -24,7 +21,7 @@ namespace cg_task3
                                                     {0, 1, 0, 0},
                                                     {0, 0, 0, 1/zPoint},
                                                     {0, 0, 0, 1}});
-            scaleT[0, 0] = scaleT[1, 1] = scaleT[2, 2] = scaleT[3,3] =  1;
+            scaleT[0, 0] = scaleT[1, 1] = scaleT[2, 2] = scaleT[3, 3] = 1;
             pictureBox.Paint += PictureBox_Paint;
             SizeChanged += Form1_SizeChanged;
         }
@@ -44,7 +41,7 @@ namespace cg_task3
             g.TranslateTransform(w / 2F, h / 2F);
             PaintAxes(g, w, h);
             Pen pen = new Pen(Color.Black);
-            Matrix p = points * scaleT* projecttion;
+            Matrix p = points * scaleT * projecttion;
             int n = 3;
             for (int i = 0; i < points.n; i += n)
             {
@@ -61,8 +58,6 @@ namespace cg_task3
             skip:;
             }
         }
-
-
 
         private void PaintAxes(Graphics g, int w, int h)
         {
@@ -142,56 +137,14 @@ namespace cg_task3
         {
             if (openFileDialog.ShowDialog() == DialogResult.Cancel)
                 return;
-            List<float[]> list = new List<float[]>();
-            float s = 400;
-            float max = 0;
-            float min = float.MaxValue;
-            using (StreamReader reader = new StreamReader(openFileDialog.OpenFile()))
-            {
-                while (!reader.EndOfStream)
-                {
-                    string line = reader.ReadLine().Trim();
-                    if (line.StartsWith("outer loop"))
-                    {
-                        int n = 3;
-                        for (int i = 0; i < n; i++)
-                        {
-                            string[] strs = Regex.Replace(reader.ReadLine().Trim(), @"\s+", " ").Split();
-                            float[] temp = new float[n];
-                            for (int j = 0; j < n; j++)
-                            {
-                                float cord = float.Parse(strs[j + 1], NumberStyles.Float, CultureInfo.InvariantCulture);
-                                max = Math.Max(max, cord);
-                                min = Math.Min(min, cord);
-                                temp[j] = float.Parse(strs[j + 1], NumberStyles.Float, CultureInfo.InvariantCulture);
-                            }
-                            list.Add(temp);
-                        }
-                    }
-                }
-            }
-            float[,] matrix = new float[points.n + list.Count, 4];
-            for (int i = 0; i < points.n; i++)
-            {
-                matrix[i, 0] = points[i, 0];
-                matrix[i, 1] = points[i, 1];
-                matrix[i, 2] = points[i, 2];
-                matrix[i, 3] = points[i, 3];
-            }
-            for (int i = points.n; i < points.n + list.Count; i++)
-            {
-                matrix[i, 0] = (list[i - points.n][0] - (max + min) / 2) / (max - min) * s;
-                matrix[i, 1] = (list[i - points.n][1] - (max + min) / 2) / (max - min) * s;
-                matrix[i, 2] = (list[i - points.n][2] - (max + min) / 2) / (max - min) * s;
-                matrix[i, 3] = 1;
-            }
-            points = new Matrix(matrix);
+            float[,] newFigure = STL.readFromFile(openFileDialog.OpenFile(), 400);
+            points.AddLines(newFigure);
             pictureBox.Refresh();
         }
 
         private void clearButton_Click(object sender, EventArgs e)
         {
-            points = new Matrix(0, 0);
+            points = new Matrix(0, 4);
             pictureBox.Refresh();
         }
 

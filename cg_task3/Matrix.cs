@@ -3,7 +3,7 @@
     public class Matrix
     {
         private float[,] matrix;
-        public readonly int n, m;
+        public int n, m;
         public float this[int i, int j]
         {
             get { return matrix[i, j]; }
@@ -20,6 +20,30 @@
             this.matrix = matrix;
             n = matrix.GetLength(0);
             m = matrix.GetLength(1);
+        }
+
+        public void AddLines(float[,] other)
+        {
+            if (m != other.GetLength(1))
+                throw new System.Exception("Разное количество столбцов!");
+
+            float[,] newMat = new float[n + other.GetLength(0), 4];
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    newMat[i, j] = matrix[i, j];
+                }
+            }
+            for (int i = n; i < n + other.GetLength(0); i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    newMat[i, j] = other[i - n, j];
+                }
+            }
+            matrix = newMat;
+            n += other.GetLength(0);
         }
 
         public static Matrix operator *(Matrix first, Matrix second)
@@ -42,17 +66,6 @@
                 }
             }
             return res;
-        }
-
-        public void ClearMatrix()
-        {
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < m; j++)
-                {
-                    matrix[i, j] = 0F;
-                }
-            }
         }
     }
 }
