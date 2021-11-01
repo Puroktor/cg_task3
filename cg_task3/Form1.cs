@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Windows.Forms;
 
 namespace cg_task3
@@ -15,7 +16,7 @@ namespace cg_task3
         {
             InitializeComponent();
             pictureBox.Focus();
-            openFileDialog.Filter = "Stl file|*.stl";
+            openFileDialog.Filter = "stl model|*.stl|obj model|*obj";
             openFileDialog.FileName = null;
             projecttion = new Matrix(new float[,]{  {1, 0, 0, 0},
                                                     {0, 1, 0, 0},
@@ -137,7 +138,16 @@ namespace cg_task3
         {
             if (openFileDialog.ShowDialog() == DialogResult.Cancel)
                 return;
-            float[,] newFigure = STL.ReadFromFile(openFileDialog.OpenFile(), 400);
+            int size = 400;
+            float[,] newFigure;
+            if (Path.GetExtension(openFileDialog.FileName) == ".stl")
+            {
+                newFigure = STL.ReadFromFile(openFileDialog.OpenFile(), size);
+            }
+            else 
+            {
+                newFigure = OBJ.ReadFromFile(openFileDialog.OpenFile(), size);
+            }
             points.AddLines(newFigure);
             pictureBox.Refresh();
         }
