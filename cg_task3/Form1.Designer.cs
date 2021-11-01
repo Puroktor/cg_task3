@@ -165,7 +165,7 @@ namespace cg_task3
             this.scaleYtrackBar.SmallChange = 5;
             this.scaleYtrackBar.TabIndex = 48;
             this.scaleYtrackBar.Value = 100;
-            this.scaleYtrackBar.ValueChanged += new System.EventHandler(this.scaleYtrackBar_ValueChanged);
+            this.scaleYtrackBar.ValueChanged += new System.EventHandler(this.ScaleYtrackBar_ValueChanged);
             // 
             // scaleXlabel
             // 
@@ -203,7 +203,7 @@ namespace cg_task3
             this.scaleXtrackBar.SmallChange = 5;
             this.scaleXtrackBar.TabIndex = 45;
             this.scaleXtrackBar.Value = 100;
-            this.scaleXtrackBar.ValueChanged += new System.EventHandler(this.scaleXtrackBar_ValueChanged);
+            this.scaleXtrackBar.ValueChanged += new System.EventHandler(this.ScaleXtrackBar_ValueChanged);
             // 
             // transfZbutton
             // 
@@ -214,7 +214,7 @@ namespace cg_task3
             this.transfZbutton.TabIndex = 44;
             this.transfZbutton.Text = "Go";
             this.transfZbutton.UseVisualStyleBackColor = true;
-            this.transfZbutton.Click += new System.EventHandler(this.transfZbutton_Click);
+            this.transfZbutton.Click += new System.EventHandler(this.TransfZbutton_Click);
             // 
             // transfZtextBox
             // 
@@ -245,7 +245,7 @@ namespace cg_task3
             this.transfYbutton.TabIndex = 41;
             this.transfYbutton.Text = "Go";
             this.transfYbutton.UseVisualStyleBackColor = true;
-            this.transfYbutton.Click += new System.EventHandler(this.transfYbutton_Click);
+            this.transfYbutton.Click += new System.EventHandler(this.TransfYbutton_Click);
             // 
             // transfYtextBox
             // 
@@ -276,7 +276,7 @@ namespace cg_task3
             this.transfXbutton.TabIndex = 38;
             this.transfXbutton.Text = "Go";
             this.transfXbutton.UseVisualStyleBackColor = true;
-            this.transfXbutton.Click += new System.EventHandler(this.transfXbutton_Click);
+            this.transfXbutton.Click += new System.EventHandler(this.TransfXbutton_Click);
             // 
             // transfXtextBox
             // 
@@ -307,7 +307,7 @@ namespace cg_task3
             this.clearButton.TabIndex = 34;
             this.clearButton.Text = "Clear";
             this.clearButton.UseVisualStyleBackColor = true;
-            this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
+            this.clearButton.Click += new System.EventHandler(this.ClearButton_Click);
             // 
             // zLabel
             // 
@@ -343,7 +343,7 @@ namespace cg_task3
             this.trackBarZ.Size = new System.Drawing.Size(175, 45);
             this.trackBarZ.SmallChange = 10;
             this.trackBarZ.TabIndex = 31;
-            this.trackBarZ.ValueChanged += new System.EventHandler(this.trackBarZ_ValueChanged);
+            this.trackBarZ.ValueChanged += new System.EventHandler(this.TrackBarZ_ValueChanged);
             // 
             // yLabel
             // 
@@ -379,7 +379,7 @@ namespace cg_task3
             this.trackBarY.Size = new System.Drawing.Size(175, 45);
             this.trackBarY.SmallChange = 10;
             this.trackBarY.TabIndex = 28;
-            this.trackBarY.ValueChanged += new System.EventHandler(this.trackBarY_ValueChanged);
+            this.trackBarY.ValueChanged += new System.EventHandler(this.TrackBarY_ValueChanged);
             // 
             // xLabel
             // 
@@ -448,7 +448,7 @@ namespace cg_task3
             this.menuStrip.Size = new System.Drawing.Size(1109, 24);
             this.menuStrip.TabIndex = 4;
             this.menuStrip.Text = "menuStrip";
-            this.menuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip_ItemClicked);
+            this.menuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.MenuStrip_ItemClicked);
             // 
             // toolStripMenuItem1
             // 
@@ -594,7 +594,7 @@ namespace cg_task3
             this.scaleZtrackBar.SmallChange = 5;
             this.scaleZtrackBar.TabIndex = 48;
             this.scaleZtrackBar.Value = 100;
-            this.scaleZtrackBar.ValueChanged += new System.EventHandler(this.scaleZtrackBar_ValueChanged);
+            this.scaleZtrackBar.ValueChanged += new System.EventHandler(this.ScaleZtrackBar_ValueChanged);
             // 
             // Form1
             // 

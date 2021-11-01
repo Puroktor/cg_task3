@@ -8,9 +8,9 @@ namespace cg_task3
     public partial class Form1 : Form
     {
         private Matrix points = new Matrix(0, 4);
-        private float zPoint = -1000;
-        private Matrix projecttion;
-        private Matrix scaleT = new Matrix(4, 4);
+        private readonly float zPoint = -1000;
+        private readonly Matrix projecttion;
+        private readonly Matrix scaleT = new Matrix(4, 4);
         public Form1()
         {
             InitializeComponent();
@@ -89,7 +89,7 @@ namespace cg_task3
             pictureBox.Refresh();
         }
 
-        private void trackBarY_ValueChanged(object sender, EventArgs e)
+        private void TrackBarY_ValueChanged(object sender, EventArgs e)
         {
             int degree = ((TrackBar)sender).Value;
             RotateY(degree - int.Parse(yLabel.Text));
@@ -111,7 +111,7 @@ namespace cg_task3
             pictureBox.Refresh();
         }
 
-        private void trackBarZ_ValueChanged(object sender, EventArgs e)
+        private void TrackBarZ_ValueChanged(object sender, EventArgs e)
         {
             int degree = ((TrackBar)sender).Value;
             RotateZ(degree - int.Parse(zLabel.Text));
@@ -133,22 +133,22 @@ namespace cg_task3
             pictureBox.Refresh();
         }
 
-        private void menuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        private void MenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             if (openFileDialog.ShowDialog() == DialogResult.Cancel)
                 return;
-            float[,] newFigure = STL.readFromFile(openFileDialog.OpenFile(), 400);
+            float[,] newFigure = STL.ReadFromFile(openFileDialog.OpenFile(), 400);
             points.AddLines(newFigure);
             pictureBox.Refresh();
         }
 
-        private void clearButton_Click(object sender, EventArgs e)
+        private void ClearButton_Click(object sender, EventArgs e)
         {
             points = new Matrix(0, 4);
             pictureBox.Refresh();
         }
 
-        private void transfXbutton_Click(object sender, EventArgs e)
+        private void TransfXbutton_Click(object sender, EventArgs e)
         {
             Matrix T = new Matrix(4, 4);
             T[0, 0] = T[1, 1] = T[2, 2] = T[3, 3] = 1;
@@ -157,7 +157,7 @@ namespace cg_task3
             pictureBox.Refresh();
         }
 
-        private void transfYbutton_Click(object sender, EventArgs e)
+        private void TransfYbutton_Click(object sender, EventArgs e)
         {
             Matrix T = new Matrix(4, 4);
             T[0, 0] = T[1, 1] = T[2, 2] = T[3, 3] = 1;
@@ -166,7 +166,7 @@ namespace cg_task3
             pictureBox.Refresh();
         }
 
-        private void transfZbutton_Click(object sender, EventArgs e)
+        private void TransfZbutton_Click(object sender, EventArgs e)
         {
             Matrix T = new Matrix(4, 4);
             T[0, 0] = T[1, 1] = T[2, 2] = T[3, 3] = 1;
@@ -175,7 +175,7 @@ namespace cg_task3
             pictureBox.Refresh();
         }
 
-        private void scaleXtrackBar_ValueChanged(object sender, EventArgs e)
+        private void ScaleXtrackBar_ValueChanged(object sender, EventArgs e)
         {
             int percentage = ((TrackBar)sender).Value;
             scaleT[0, 0] = percentage / 100f;
@@ -183,7 +183,7 @@ namespace cg_task3
             scaleXlabel.Text = percentage.ToString();
         }
 
-        private void scaleYtrackBar_ValueChanged(object sender, EventArgs e)
+        private void ScaleYtrackBar_ValueChanged(object sender, EventArgs e)
         {
             int percentage = ((TrackBar)sender).Value;
             scaleT[1, 1] = percentage / 100f;
@@ -191,7 +191,7 @@ namespace cg_task3
             scaleYlabel.Text = percentage.ToString();
         }
 
-        private void scaleZtrackBar_ValueChanged(object sender, EventArgs e)
+        private void ScaleZtrackBar_ValueChanged(object sender, EventArgs e)
         {
             int percentage = ((TrackBar)sender).Value;
             scaleT[2, 2] = percentage / 100f;
