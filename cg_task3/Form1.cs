@@ -69,12 +69,12 @@ namespace cg_task3
             }
         }
 
-        private void PaintAxes(Graphics g, int w, int h)
+        private void PaintAxes(Graphics g, float w, float h)
         {
             Pen pen = new Pen(Color.Red, 1);
-            g.DrawLine(pen, 0, -h / 2, 0, h / 2);
+            g.DrawLine(pen, 0, -h, 0, h);
             pen.Color = Color.Green;
-            g.DrawLine(pen, -w / 2, 0, w / 2, 0);
+            g.DrawLine(pen, -w, 0, w, 0);
         }
 
         private void TrackBarX_ValueChanged(object sender, EventArgs e)

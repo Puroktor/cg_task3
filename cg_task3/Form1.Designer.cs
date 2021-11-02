@@ -172,7 +172,6 @@ namespace cg_task3
             this.scaleZtrackBar.Minimum = 1;
             this.scaleZtrackBar.Name = "scaleZtrackBar";
             this.scaleZtrackBar.Size = new System.Drawing.Size(175, 45);
-            this.scaleZtrackBar.SmallChange = 5;
             this.scaleZtrackBar.TabIndex = 48;
             this.scaleZtrackBar.Value = 100;
             this.scaleZtrackBar.ValueChanged += new System.EventHandler(this.ScaleZtrackBar_ValueChanged);
@@ -200,7 +199,6 @@ namespace cg_task3
             this.scaleYtrackBar.Minimum = 1;
             this.scaleYtrackBar.Name = "scaleYtrackBar";
             this.scaleYtrackBar.Size = new System.Drawing.Size(175, 45);
-            this.scaleYtrackBar.SmallChange = 5;
             this.scaleYtrackBar.TabIndex = 48;
             this.scaleYtrackBar.Value = 100;
             this.scaleYtrackBar.ValueChanged += new System.EventHandler(this.ScaleYtrackBar_ValueChanged);
@@ -238,7 +236,6 @@ namespace cg_task3
             this.scaleXtrackBar.Minimum = 1;
             this.scaleXtrackBar.Name = "scaleXtrackBar";
             this.scaleXtrackBar.Size = new System.Drawing.Size(175, 45);
-            this.scaleXtrackBar.SmallChange = 5;
             this.scaleXtrackBar.TabIndex = 45;
             this.scaleXtrackBar.Value = 100;
             this.scaleXtrackBar.ValueChanged += new System.EventHandler(this.ScaleXtrackBar_ValueChanged);
@@ -379,7 +376,6 @@ namespace cg_task3
             this.trackBarZ.Maximum = 360;
             this.trackBarZ.Name = "trackBarZ";
             this.trackBarZ.Size = new System.Drawing.Size(175, 45);
-            this.trackBarZ.SmallChange = 10;
             this.trackBarZ.TabIndex = 31;
             this.trackBarZ.ValueChanged += new System.EventHandler(this.TrackBarZ_ValueChanged);
             // 
@@ -415,7 +411,6 @@ namespace cg_task3
             this.trackBarY.Maximum = 360;
             this.trackBarY.Name = "trackBarY";
             this.trackBarY.Size = new System.Drawing.Size(175, 45);
-            this.trackBarY.SmallChange = 10;
             this.trackBarY.TabIndex = 28;
             this.trackBarY.ValueChanged += new System.EventHandler(this.TrackBarY_ValueChanged);
             // 
@@ -451,7 +446,6 @@ namespace cg_task3
             this.TrackBarX.Maximum = 360;
             this.TrackBarX.Name = "TrackBarX";
             this.TrackBarX.Size = new System.Drawing.Size(175, 45);
-            this.TrackBarX.SmallChange = 10;
             this.TrackBarX.TabIndex = 18;
             this.TrackBarX.ValueChanged += new System.EventHandler(this.TrackBarX_ValueChanged);
             // 
