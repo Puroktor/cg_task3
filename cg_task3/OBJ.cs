@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace cg_task3
@@ -14,8 +15,10 @@ namespace cg_task3
             List<float[]> v = new List<float[]>();
             List<float[]> f = new List<float[]>();
 
+            int k = 3;
             float max = 0;
             float min = float.MaxValue;
+            float[] sum = new float[k];
 
             while (!reader.EndOfStream)
             {
@@ -23,11 +26,12 @@ namespace cg_task3
                 if (line.StartsWith("v"))
                 {
                     string[] cords = Regex.Replace(line.Trim(), @"\s+", " ").Split();
-                    float[] temp = new float[3];
-                    for (int i = 1; i < 4; i++)
+                    float[] temp = new float[k];
+                    for (int i = 1; i < k + 1; i++)
                     {
                         float value = float.Parse(cords[i], CultureInfo.InvariantCulture);
                         temp[i - 1] = value;
+                        sum[i - 1] += value;
                         max = Math.Max(max, value);
                         min = Math.Min(min, value);
                     }
@@ -44,16 +48,7 @@ namespace cg_task3
                     continue;
                 }
             }
-            float[,] mat = new float[f.Count, 4];
-            for (int i = 0; i < f.Count; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    mat[i, j] = f[i][j] / (max - min) * s;
-                }
-                mat[i, 3] = 1;
-            }
-            return mat;
+            return STL.Convert3DCord(f, max, min, s, sum.Select(x => x / v.Count).ToArray());
         }
     }
 }

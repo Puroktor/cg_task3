@@ -31,7 +31,10 @@ namespace cg_task3
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel = new System.Windows.Forms.Panel();
+            this.scaleZlabel = new System.Windows.Forms.Label();
             this.scaleYlabel = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.scaleZtrackBar = new System.Windows.Forms.TrackBar();
             this.label8 = new System.Windows.Forms.Label();
             this.scaleYtrackBar = new System.Windows.Forms.TrackBar();
             this.scaleXlabel = new System.Windows.Forms.Label();
@@ -76,10 +79,8 @@ namespace cg_task3
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.scaleZlabel = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.scaleZtrackBar = new System.Windows.Forms.TrackBar();
             this.panel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.scaleZtrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.scaleYtrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.scaleXtrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarZ)).BeginInit();
@@ -88,7 +89,6 @@ namespace cg_task3
             this.imagePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.menuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.scaleZtrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // panel
@@ -129,6 +129,16 @@ namespace cg_task3
             this.panel.Size = new System.Drawing.Size(200, 696);
             this.panel.TabIndex = 0;
             // 
+            // scaleZlabel
+            // 
+            this.scaleZlabel.AutoSize = true;
+            this.scaleZlabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.scaleZlabel.Location = new System.Drawing.Point(168, 349);
+            this.scaleZlabel.Name = "scaleZlabel";
+            this.scaleZlabel.Size = new System.Drawing.Size(31, 15);
+            this.scaleZlabel.TabIndex = 50;
+            this.scaleZlabel.Text = "100";
+            // 
             // scaleYlabel
             // 
             this.scaleYlabel.AutoSize = true;
@@ -138,6 +148,34 @@ namespace cg_task3
             this.scaleYlabel.Size = new System.Drawing.Size(31, 15);
             this.scaleYlabel.TabIndex = 50;
             this.scaleYlabel.Text = "100";
+            // 
+            // label10
+            // 
+            this.label10.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label10.Location = new System.Drawing.Point(1, 349);
+            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(171, 16);
+            this.label10.TabIndex = 49;
+            this.label10.Text = "Растяжение-сжатие Z:";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // scaleZtrackBar
+            // 
+            this.scaleZtrackBar.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.scaleZtrackBar.LargeChange = 10;
+            this.scaleZtrackBar.Location = new System.Drawing.Point(9, 376);
+            this.scaleZtrackBar.Margin = new System.Windows.Forms.Padding(4);
+            this.scaleZtrackBar.Maximum = 200;
+            this.scaleZtrackBar.Minimum = 1;
+            this.scaleZtrackBar.Name = "scaleZtrackBar";
+            this.scaleZtrackBar.Size = new System.Drawing.Size(175, 45);
+            this.scaleZtrackBar.SmallChange = 5;
+            this.scaleZtrackBar.TabIndex = 48;
+            this.scaleZtrackBar.Value = 100;
+            this.scaleZtrackBar.ValueChanged += new System.EventHandler(this.ScaleZtrackBar_ValueChanged);
             // 
             // label8
             // 
@@ -228,12 +266,12 @@ namespace cg_task3
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label5.Location = new System.Drawing.Point(30, 134);
+            this.label5.Location = new System.Drawing.Point(42, 134);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(140, 16);
+            this.label5.Size = new System.Drawing.Size(110, 16);
             this.label5.TabIndex = 42;
-            this.label5.Text = "Перенос по Z (px):";
+            this.label5.Text = "Перенос по Z:";
             this.label5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // transfYbutton
@@ -259,12 +297,12 @@ namespace cg_task3
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(30, 71);
+            this.label1.Location = new System.Drawing.Point(44, 71);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(141, 16);
+            this.label1.Size = new System.Drawing.Size(111, 16);
             this.label1.TabIndex = 39;
-            this.label1.Text = "Перенос по Y (px):";
+            this.label1.Text = "Перенос по Y:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // transfXbutton
@@ -290,12 +328,12 @@ namespace cg_task3
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(30, 10);
+            this.label3.Location = new System.Drawing.Point(40, 10);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(140, 16);
+            this.label3.Size = new System.Drawing.Size(110, 16);
             this.label3.TabIndex = 36;
-            this.label3.Text = "Перенос по X (px):";
+            this.label3.Text = "Перенос по X:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // clearButton
@@ -558,44 +596,6 @@ namespace cg_task3
             // 
             this.openFileDialog.FileName = "openFileDialog1";
             // 
-            // scaleZlabel
-            // 
-            this.scaleZlabel.AutoSize = true;
-            this.scaleZlabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.scaleZlabel.Location = new System.Drawing.Point(168, 349);
-            this.scaleZlabel.Name = "scaleZlabel";
-            this.scaleZlabel.Size = new System.Drawing.Size(31, 15);
-            this.scaleZlabel.TabIndex = 50;
-            this.scaleZlabel.Text = "100";
-            // 
-            // label10
-            // 
-            this.label10.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label10.Location = new System.Drawing.Point(1, 349);
-            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(171, 16);
-            this.label10.TabIndex = 49;
-            this.label10.Text = "Растяжение-сжатие Z:";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // scaleZtrackBar
-            // 
-            this.scaleZtrackBar.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.scaleZtrackBar.LargeChange = 10;
-            this.scaleZtrackBar.Location = new System.Drawing.Point(9, 376);
-            this.scaleZtrackBar.Margin = new System.Windows.Forms.Padding(4);
-            this.scaleZtrackBar.Maximum = 200;
-            this.scaleZtrackBar.Minimum = 1;
-            this.scaleZtrackBar.Name = "scaleZtrackBar";
-            this.scaleZtrackBar.Size = new System.Drawing.Size(175, 45);
-            this.scaleZtrackBar.SmallChange = 5;
-            this.scaleZtrackBar.TabIndex = 48;
-            this.scaleZtrackBar.Value = 100;
-            this.scaleZtrackBar.ValueChanged += new System.EventHandler(this.ScaleZtrackBar_ValueChanged);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -611,6 +611,7 @@ namespace cg_task3
             this.Text = "Form";
             this.panel.ResumeLayout(false);
             this.panel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.scaleZtrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.scaleYtrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.scaleXtrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarZ)).EndInit();
@@ -620,7 +621,6 @@ namespace cg_task3
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.scaleZtrackBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -1,25 +1,41 @@
 ﻿namespace cg_task3
 {
-    public class Matrix
+    public class Matrix4
     {
         private float[,] matrix;
-        public int n, m;
+        public int n;
+        public int m = 4;
+
+        public Vector3D this[int i]
+        {
+            get
+            {
+                return new Vector3D(matrix[i, 0], matrix[i, 1], matrix[i, 2], matrix[i, 3]);
+            }
+            set
+            {
+                matrix[i, 0] = value.X;
+                matrix[i, 1] = value.Y;
+                matrix[i, 2] = value.Z;
+                matrix[i, 3] = 1;
+            }
+        }
         public float this[int i, int j]
         {
             get { return matrix[i, j]; }
             set { matrix[i, j] = value; }
         }
-        public Matrix(int n, int m)
+        public Matrix4(int n)
         {
             matrix = new float[n, m];
             this.n = n;
-            this.m = m;
         }
-        public Matrix(float[,] matrix)
+        public Matrix4(float[,] matrix)
         {
+            if (m != matrix.GetLength(1))
+                throw new System.Exception("Разное количество столбцов!");
             this.matrix = matrix;
             n = matrix.GetLength(0);
-            m = matrix.GetLength(1);
         }
 
         public void AddLines(float[,] other)
@@ -46,13 +62,13 @@
             n += other.GetLength(0);
         }
 
-        public static Matrix operator *(Matrix first, Matrix second)
+        public static Matrix4 operator *(Matrix4 first, Matrix4 second)
         {
             if (first == null || second == null)
                 return null;
             if (first.m != second.n)
                 throw new System.Exception("Матрицы разного размера!");
-            Matrix res = new Matrix(first.n, second.m);
+            Matrix4 res = new Matrix4(first.n);
             for (int i = 0; i < first.n; i++)
             {
                 for (int j = 0; j < second.m; j++)
