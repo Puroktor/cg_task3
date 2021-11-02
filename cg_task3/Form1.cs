@@ -149,7 +149,7 @@ namespace cg_task3
                 return;
             float size = 0.5f;
             float[,] newFigure;
-            if (Path.GetExtension(openFileDialog.FileName) == ".stl")
+            if (Path.GetExtension(openFileDialog.FileName).ToLower() == ".stl")
             {
                 newFigure = STL.ReadFromFile(openFileDialog.OpenFile(), size);
             }
