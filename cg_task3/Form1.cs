@@ -20,10 +20,10 @@ namespace cg_task3
             pictureBox.Focus();
             openFileDialog.Filter = "stl model|*.stl|obj model|*obj";
             openFileDialog.FileName = null;
-            projecttion = new Matrix4(new float[,]{  {1, 0, 0, 0},
+            projecttion = new Matrix4(new float[,]{ {1, 0, 0, 0},
                                                     {0, 1, 0, 0},
                                                     {0, 0, 0, 1/vPoint},
-                                                    {0, 0, -1/viewPoint, 1}});
+                                                    {0, 0, 1/viewPoint, 1}});
             scaleT[0, 0] = scaleT[1, 1] = scaleT[2, 2] = scaleT[3, 3] = 1;
             pictureBox.Paint += PictureBox_Paint;
             SizeChanged += Form1_SizeChanged;
@@ -66,14 +66,14 @@ namespace cg_task3
             }
             for (int i = 0; i < p.n; i += k)
             {
-                if (dotProds[i / k] >= 0 && p[i].Z < 0 && p[i + 1].Z < 0 && p[i + 2].Z < 0)
+                if (dotProds[i / k] >= 0 && p[i].Z > 0 && p[i + 1].Z > 0 && p[i + 2].Z > 0)
                 {
                     float normilized = dotProds[i / k] / max;
                     int color = (int)(45 + normilized * 210);
                     PointF[] point = new PointF[k];
                     for (int j = 0; j < k; j++)
                     {
-                        point[j] = (p[i +j] * m).XY();
+                        point[j] = (p[i + j] * m).XY();
                     }
                     using Brush brush = new SolidBrush(Color.FromArgb(0, color, 0));
                     using Pen pen = new Pen(brush);
@@ -82,31 +82,28 @@ namespace cg_task3
                 }
             }
         }
-
         private void SortTriangles(Matrix4 mat)
         {
             int K = 3;
-            for (int i = K; i < mat.n; i += K)
+            float[] mins = new float[mat.n / K];
+            Vector3D[][] triangles = new Vector3D[mat.n / K][];
+            for (int i = 0; i < mat.n / K; i++)
             {
-                Vector3D[] elem = new Vector3D[K];
-                float minZ = float.MaxValue;
-                for (int k = 0; k < K; k++)
+                mins[i] = float.MaxValue;
+                Vector3D[] triangle = new Vector3D[K];
+                for (int j = 0; j < K; j++)
                 {
-                    elem[k] = mat[i + k];
-                    minZ = Math.Min(elem[k].Z, minZ);
+                    triangle[j] = mat[3 * i + j];
+                    mins[i] = Math.Min(mins[i], triangle[j].Z);
                 }
-                int j = i - K;
-                while (j >= 0 && minZ > Math.Min(Math.Min(mat[j].Z, mat[j + 1].Z), mat[j + 2].Z))
+                triangles[i] = triangle;
+            }
+            Array.Sort(mins, triangles);
+            for (int i = 0; i < mat.n / K; i++)
+            {
+                for (int j = 0; j < K; j++)
                 {
-                    for (int k = 0; k < K; k++)
-                    {
-                        mat[j + K + k] = mat[j + k];
-                    }
-                    j -= K;
-                }
-                for (int k = 0; k < K; k++)
-                {
-                    mat[j + K + k] = elem[k];
+                    mat[3 * i + j] = triangles[i][j];
                 }
             }
         }
