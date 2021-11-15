@@ -9,7 +9,7 @@ namespace cg_task3
     public partial class Form1 : Form
     {
         private Matrix4 points = new Matrix4(0);
-        private readonly float vPoint = 5;
+        private readonly float vPoint = -5;
         private readonly float viewPoint = 2;
         private readonly float lightX = 0, lightY = 0, lightZ = 2;
         private readonly Matrix4 projecttion;
@@ -22,7 +22,7 @@ namespace cg_task3
             openFileDialog.FileName = null;
             projecttion = new Matrix4(new float[,]{  {1, 0, 0, 0},
                                                     {0, 1, 0, 0},
-                                                    {0, 0, 0, -1/vPoint},
+                                                    {0, 0, 0, 1/vPoint},
                                                     {0, 0, -1/viewPoint, 1}});
             scaleT[0, 0] = scaleT[1, 1] = scaleT[2, 2] = scaleT[3, 3] = 1;
             pictureBox.Paint += PictureBox_Paint;
@@ -36,45 +36,79 @@ namespace cg_task3
 
         private void PictureBox_Paint(object sender, PaintEventArgs e)
         {
-            if (points.n == 0)
-                return;
             PictureBox box = (PictureBox)sender;
             float w = box.Width / 2F, h = box.Height / 2F;
             float m = Math.Min(w, h);
             Graphics g = e.Graphics;
             g.TranslateTransform(w, h);
-            //PaintAxes(g, w, h);
+
+            Matrix4 matrix = new Matrix4(points.GetMatrix()) * scaleT;
+            matrix.AddLines(new float[,]{{ -2, 0, 0, 1 }, { 0, 0, 0, 1 } , { 2, 0, 0, 1 },
+                                        { 0, -2, 0, 1 }, { 0, 0, 0, 1 } , { 0, 1, 0, 1 },
+                                        { 0, 0, -2, 1 }, { 0, 0, 0, 1 } , { 0, 0, 2, 1 }});
 
             Vector3D lightRay = new Vector3D(0, 0, 0) - new Vector3D(lightX, lightY, lightZ);
-            Matrix4 p = points * scaleT * projecttion;
+            Matrix4 p = matrix * projecttion;
+            SortTriangles(p);
             int k = 3;
-            float[] dotProds = new float[points.n / k];
+            float[] dotProds = new float[p.n / k];
             float max = 0;
-            for (int i = 0; i < points.n; i += k)
+            for (int i = 0; i < p.n; i += k)
             {
                 Vector3D normal = (p[i + 1] - p[i]) ^ (p[i + 2] - p[i + 1]);
                 float dotProd = normal * lightRay;
                 dotProds[i / k] = dotProd;
                 max = Math.Max(max, dotProd);
             }
-            for (int i = 0; i < points.n; i += k)
+            if (max == 0)
             {
-                if (dotProds[i / k] > 0 && p[i].Z < 0 && p[i + 1].Z < 0 && p[i + 2].Z < 0)
+                max = 1;
+            }
+            for (int i = 0; i < p.n; i += k)
+            {
+                if (dotProds[i / k] >= 0 && p[i].Z < 0 && p[i + 1].Z < 0 && p[i + 2].Z < 0)
                 {
                     float normilized = dotProds[i / k] / max;
                     int color = (int)(45 + normilized * 210);
-                    Brush brush = new SolidBrush(Color.FromArgb(0, color, 0));
-                    g.FillPolygon(brush, new PointF[] { (p[i] * m).XY(), (p[i + 1] * m).XY(), (p[i + 2] * m).XY() });
+                    PointF[] point = new PointF[k];
+                    for (int j = 0; j < k; j++)
+                    {
+                        point[j] = (p[i +j] * m).XY();
+                    }
+                    using Brush brush = new SolidBrush(Color.FromArgb(0, color, 0));
+                    using Pen pen = new Pen(brush);
+                    g.DrawPolygon(pen, point);
+                    g.FillPolygon(brush, point);
                 }
             }
         }
 
-        private void PaintAxes(Graphics g, float w, float h)
+        private void SortTriangles(Matrix4 mat)
         {
-            Pen pen = new Pen(Color.Red, 1);
-            g.DrawLine(pen, 0, -h, 0, h);
-            pen.Color = Color.Green;
-            g.DrawLine(pen, -w, 0, w, 0);
+            int K = 3;
+            for (int i = K; i < mat.n; i += K)
+            {
+                Vector3D[] elem = new Vector3D[K];
+                float minZ = float.MaxValue;
+                for (int k = 0; k < K; k++)
+                {
+                    elem[k] = mat[i + k];
+                    minZ = Math.Min(elem[k].Z, minZ);
+                }
+                int j = i - K;
+                while (j >= 0 && minZ > Math.Min(Math.Min(mat[j].Z, mat[j + 1].Z), mat[j + 2].Z))
+                {
+                    for (int k = 0; k < K; k++)
+                    {
+                        mat[j + K + k] = mat[j + k];
+                    }
+                    j -= K;
+                }
+                for (int k = 0; k < K; k++)
+                {
+                    mat[j + K + k] = elem[k];
+                }
+            }
         }
 
         private void TrackBarX_ValueChanged(object sender, EventArgs e)

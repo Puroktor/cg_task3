@@ -38,6 +38,10 @@
             n = matrix.GetLength(0);
         }
 
+        public float[,] GetMatrix()
+        {
+            return matrix;
+        }
         public void AddLines(float[,] other)
         {
             if (m != other.GetLength(1))
