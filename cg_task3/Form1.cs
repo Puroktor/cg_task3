@@ -52,16 +52,12 @@ namespace cg_task3
             Matrix4 p = matrix * projecttion;
             SortTriangles(p);
             Vector3D[] n = FindNormalsToVertices(p);
-            float[] dotProds = new float[p.n];
-            float max = 0;
+            float[] cosArr = new float[p.n];
+            float lightSize = lightRay.Size();
             for (int i = 0; i < p.n; i++)
             {
-                dotProds[i] = n[i] * lightRay;
-                max = Math.Max(max, dotProds[i]);
-            }
-            if (max == 0)
-            {
-                max = 1;
+                float cos = n[i] * lightRay / (n[i].Size() * lightSize);
+                cosArr[i] = float.IsNaN(cos) ? 0 : 1;
             }
             for (int i = 0; i < p.n; i += K)
             {
@@ -69,7 +65,7 @@ namespace cg_task3
                 if (v1.Z > 0 && v2.Z > 0 && v3.Z > 0)
                 {
                     DrawTriangle(g, (int)(v1.X * m), (int)(v1.Y * m), (int)(v2.X * m), (int)(v2.Y * m),
-                        (int)(v3.X * m), (int)(v3.Y * m), dotProds[i] / max, dotProds[i + 1] / max, dotProds[i + 2] / max);
+                        (int)(v3.X * m), (int)(v3.Y * m), cosArr[i], cosArr[i + 1], cosArr[i + 2]);
                 }
             }
         }
@@ -151,7 +147,7 @@ namespace cg_task3
                 using Pen pen = new Pen(Color.FromArgb(0, (int)(45 + I * 210), 0));
                 g.DrawRectangle(pen, tx, y, 1, 1);
                 I1 += dI;
-                
+
             }
         }
 
