@@ -55,7 +55,7 @@ namespace cg_task3
 
         public static Vector3D operator ^(Vector3D f, Vector3D s)
         {
-            float x = f.Y * s.Z - s.Z * f.Z;
+            float x = f.Y * s.Z - s.Y * f.Z;
             float y = s.X * f.Z - f.X * s.Z;
             float z = f.X * s.Y - s.X * f.Y;
             return new Vector3D(x, y, z);
