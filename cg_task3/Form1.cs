@@ -51,20 +51,20 @@ namespace cg_task3
             Matrix4 p = matrix * projecttion;
             SortTriangles(p);
             int k = 3;
-            float[] dotProds = new float[p.n / k];
+            float[] cosArr = new float[p.n / k];
             float raySize = lightRay.Size();
             for (int i = 0; i < p.n; i += k)
             {
                 Vector3D normal = (p[i + 1] - p[i]) ^ (p[i + 2] - p[i]);
-                float dotProd = normal * lightRay / (normal.Size() * raySize);
-                dotProds[i / k] = float.IsNaN(dotProd) ? 0 : dotProd;
+                float cos = normal * lightRay / (normal.Size() * raySize);
+                cosArr[i / k] = float.IsNaN(cos) ? 0 : cos;
             }
 
             for (int i = 0; i < p.n; i += k)
             {
-                if (dotProds[i / k] >= 0 && p[i].Z > 0 && p[i + 1].Z > 0 && p[i + 2].Z > 0)
+                if (cosArr[i / k] >= 0 && p[i].Z > 0 && p[i + 1].Z > 0 && p[i + 2].Z > 0)
                 {
-                    int color = (int)(dotProds[i / k] * 200);
+                    int color = (int)(cosArr[i / k] * 200);
                     PointF[] point = new PointF[k];
                     for (int j = 0; j < k; j++)
                     {
