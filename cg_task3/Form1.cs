@@ -14,6 +14,7 @@ namespace cg_task3
         private readonly float lightX = 0, lightY = 0, lightZ = 2;
         private readonly Matrix4 projecttion;
         private readonly Matrix4 scaleT = new Matrix4(4);
+        private const int K = 3;
         public Form1()
         {
             InitializeComponent();
@@ -44,47 +45,154 @@ namespace cg_task3
 
             Matrix4 matrix = new Matrix4(points.GetMatrix()) * scaleT;
             matrix.AddLines(new float[,]{{ -2, 0, 0, 1 }, { 0, 0, 0, 1 } , { 2, 0, 0, 1 },
-                                        { 0, -2, 0, 1 }, { 0, 0, 0, 1 } , { 0, 1, 0, 1 },
+                                        { 0, -2, 0, 1 }, { 0, 0, 0, 1 } , { 0, 2, 0, 1 },
                                         { 0, 0, -2, 1 }, { 0, 0, 0, 1 } , { 0, 0, 2, 1 }});
 
             Vector3D lightRay = new Vector3D(0, 0, 0) - new Vector3D(lightX, lightY, lightZ);
             Matrix4 p = matrix * projecttion;
             SortTriangles(p);
-            int k = 3;
-            float[] dotProds = new float[p.n / k];
+            Vector3D[] n = FindNormalsToVertices(p);
+            float[] dotProds = new float[p.n];
             float max = 0;
-            for (int i = 0; i < p.n; i += k)
+            for (int i = 0; i < p.n; i++)
             {
-                Vector3D normal = (p[i + 1] - p[i]) ^ (p[i + 2] - p[i + 1]);
-                float dotProd = normal * lightRay;
-                dotProds[i / k] = dotProd;
-                max = Math.Max(max, dotProd);
+                dotProds[i] = n[i] * lightRay;
+                max = Math.Max(max, dotProds[i]);
             }
             if (max == 0)
             {
                 max = 1;
             }
-            for (int i = 0; i < p.n; i += k)
+            for (int i = 0; i < p.n; i += K)
             {
-                if (dotProds[i / k] >= 0 && p[i].Z > 0 && p[i + 1].Z > 0 && p[i + 2].Z > 0)
+                Vector3D v1 = p[i], v2 = p[i + 1], v3 = p[i + 2];
+                if (v1.Z > 0 && v2.Z > 0 && v3.Z > 0)
                 {
-                    float normilized = dotProds[i / k] / max;
-                    int color = (int)(45 + normilized * 210);
-                    PointF[] point = new PointF[k];
-                    for (int j = 0; j < k; j++)
-                    {
-                        point[j] = (p[i + j] * m).XY();
-                    }
-                    using Brush brush = new SolidBrush(Color.FromArgb(0, color, 0));
-                    using Pen pen = new Pen(brush);
-                    g.DrawPolygon(pen, point);
-                    g.FillPolygon(brush, point);
+                    DrawTriangle(g, (int)(v1.X * m), (int)(v1.Y * m), (int)(v2.X * m), (int)(v2.Y * m),
+                        (int)(v3.X * m), (int)(v3.Y * m), dotProds[i] / max, dotProds[i + 1] / max, dotProds[i + 2] / max);
                 }
             }
         }
+        private void DrawTriangle(Graphics g, int x0, int y0, int x1, int y1, int x2, int y2, float I0, float I1, float I2)
+        {
+            if (y0 == y1 && y1 == y2)
+            {
+                DrawLine(g, x0, y1, x2 - x0, 0, 0);
+            }
+            if (y0 > y1)
+            {
+                Swap(ref y0, ref y1);
+                Swap(ref x0, ref x1);
+                Swap(ref I0, ref I1);
+            }
+
+            if (y0 > y2)
+            {
+                Swap(ref y0, ref y2);
+                Swap(ref x0, ref x2);
+                Swap(ref I0, ref I2);
+            }
+
+            if (y1 > y2)
+            {
+                Swap(ref y1, ref y2);
+                Swap(ref x1, ref x2);
+                Swap(ref I1, ref I2);
+            }
+
+            int cross_x1;
+            int cross_x2;
+            int dx1 = x1 - x0;
+            int dy1 = y1 - y0;
+            int dx2 = x2 - x0;
+            int dy2 = y2 - y0;
+
+            float cross_I1 = I0;
+            float dI1 = (I1 - I0) / dy1;
+            float cross_I2 = I0;
+            float dI2 = (I2 - I0) / dy2;
+
+            int top_y = y0;
+
+            int[] x = new int[] { x0, x1, x2 };
+            int[] y = new int[] { y0, y1, y2 };
+
+            for (int i = 0; i < 2; i++)
+            {
+                while (top_y < y[i + 1])
+                {
+                    cross_x1 = x[i] + dx1 * (top_y - y[i]) / dy1;
+                    cross_x2 = x0 + dx2 * (top_y - y0) / dy2;
+
+                    if (cross_x1 > cross_x2)
+                    {
+                        DrawLine(g, cross_x2, top_y, cross_x1 - cross_x2, cross_I2, cross_I1);
+                    }
+                    else
+                    {
+                        DrawLine(g, cross_x1, top_y, cross_x2 - cross_x1, cross_I1, cross_I2);
+                    }
+                    cross_I1 += dI1;
+                    cross_I2 += dI2;
+                    top_y++;
+                }
+                dx1 = x2 - x1;
+                dy1 = y2 - y1;
+                dI1 = (I2 - I1) / dy1;
+            }
+        }
+
+        private void DrawLine(Graphics g, int x, int y, int w, float I1, float I2)
+        {
+            float dI = (I2 - I1) / (w + 1);
+            for (int tx = x; tx <= x + w; tx++)
+            {
+                if (I1 >= 0)
+                {
+                    using Pen pen = new Pen(Color.FromArgb(0, (int)(45 + I1 * 210), 0));
+                    g.DrawRectangle(pen, tx, y, 1, 1);
+                    I1 += dI;
+                }
+            }
+        }
+
+        private void Swap<T>(ref T f, ref T s)
+        {
+            T temp = f;
+            f = s;
+            s = temp;
+        }
+        private Vector3D[] FindNormalsToVertices(Matrix4 mat)
+        {
+            Vector3D[] fN = new Vector3D[mat.n / K];
+            for (int i = 0; i < mat.n; i += K)
+            {
+                fN[i / K] = (mat[i + 1] - mat[i]) ^ (mat[i + 2] - mat[i]);
+            }
+            Vector3D[] v = new Vector3D[mat.n];
+            for (int i = 0; i < mat.n; i++)
+            {
+                v[i] = mat[i];
+            }
+            Vector3D[] vN = new Vector3D[mat.n];
+            for (int i = 0; i < mat.n; i++)
+            {
+                int count = 0;
+                Vector3D sum = new Vector3D(0, 0, 0);
+                for (int j = 0; j < mat.n; j++)
+                {
+                    if (v[j].Equals(v[i]))
+                    {
+                        sum += fN[j / K];
+                        count++;
+                    }
+                }
+                vN[i] = sum / count;
+            }
+            return vN;
+        }
         private void SortTriangles(Matrix4 mat)
         {
-            int K = 3;
             float[] mins = new float[mat.n / K];
             Vector3D[][] triangles = new Vector3D[mat.n / K][];
             for (int i = 0; i < mat.n / K; i++)

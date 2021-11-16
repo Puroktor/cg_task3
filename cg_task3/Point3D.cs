@@ -27,6 +27,16 @@ namespace cg_task3
             return new PointF(X, Y);
         }
 
+        public static Vector3D operator +(Vector3D first, Vector3D second)
+        {
+            return new Vector3D(second.X + first.X, second.Y + first.Y, second.Z + first.Z);
+        }
+
+        public static Vector3D operator /(Vector3D first, float second)
+        {
+            return new Vector3D(first.X / second, first.Y / second, first.Z / second);
+        }
+
         public static Vector3D operator *(Vector3D first, float second)
         {
             return new Vector3D(first.X * second, first.Y * second, first.Z * second);
