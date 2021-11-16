@@ -147,12 +147,11 @@ namespace cg_task3
             float dI = (I2 - I1) / (w + 1);
             for (int tx = x; tx <= x + w; tx++)
             {
-                if (I1 >= 0)
-                {
-                    using Pen pen = new Pen(Color.FromArgb(0, (int)(45 + I1 * 210), 0));
-                    g.DrawRectangle(pen, tx, y, 1, 1);
-                    I1 += dI;
-                }
+                float I = Math.Max(I1, 0);
+                using Pen pen = new Pen(Color.FromArgb(0, (int)(45 + I * 210), 0));
+                g.DrawRectangle(pen, tx, y, 1, 1);
+                I1 += dI;
+                
             }
         }
 

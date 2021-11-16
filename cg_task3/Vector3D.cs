@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace cg_task3
 {
@@ -58,6 +59,18 @@ namespace cg_task3
             float y = s.X * f.Z - f.X * s.Z;
             float z = f.X * s.Y - s.X * f.Y;
             return new Vector3D(x, y, z);
+        }
+        public override bool Equals(object obj)
+        {
+            return obj is Vector3D d &&
+                   X == d.X &&
+                   Y == d.Y &&
+                   Z == d.Z;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(X, Y, Z);
         }
     }
 }
