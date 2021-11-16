@@ -49,16 +49,16 @@ namespace cg_task3
                                         { 0, 0, -2, 1 }, { 0, 0, 0, 1 } , { 0, 0, 2, 1 }});
 
             Vector3D lightRay = new Vector3D(0, 0, 0) - new Vector3D(lightX, lightY, lightZ);
-            Matrix4 p = matrix * projecttion;
-            SortTriangles(p);
-            Vector3D[] n = FindNormalsToVertices(p);
-            float[] cosArr = new float[p.n];
+            SortTriangles(matrix);
+            Vector3D[] n = FindNormalsToVertices(matrix);
+            float[] cosArr = new float[matrix.n];
             float lightSize = lightRay.Size();
-            for (int i = 0; i < p.n; i++)
+            for (int i = 0; i < matrix.n; i++)
             {
                 float cos = n[i] * lightRay / (n[i].Size() * lightSize);
                 cosArr[i] = float.IsNaN(cos) ? 0 : 1;
             }
+            Matrix4 p = matrix * projecttion;
             for (int i = 0; i < p.n; i += K)
             {
                 Vector3D v1 = p[i], v2 = p[i + 1], v3 = p[i + 2];
