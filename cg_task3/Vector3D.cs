@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace cg_task3
 {
@@ -27,6 +28,10 @@ namespace cg_task3
             return new PointF(X, Y);
         }
 
+        public float Size()
+        {
+            return (float)Math.Sqrt(X * X + Y * Y + Z * Z);
+        }
         public static Vector3D operator *(Vector3D first, float second)
         {
             return new Vector3D(first.X * second, first.Y * second, first.Z * second);

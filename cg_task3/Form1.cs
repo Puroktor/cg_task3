@@ -52,24 +52,19 @@ namespace cg_task3
             SortTriangles(p);
             int k = 3;
             float[] dotProds = new float[p.n / k];
-            float max = 0;
+            float raySize = lightRay.Size();
             for (int i = 0; i < p.n; i += k)
             {
                 Vector3D normal = (p[i + 1] - p[i]) ^ (p[i + 2] - p[i]);
-                float dotProd = normal * lightRay;
-                dotProds[i / k] = dotProd;
-                max = Math.Max(max, dotProd);
+                float dotProd = normal * lightRay / (normal.Size() * raySize);
+                dotProds[i / k] = float.IsNaN(dotProd) ? 0 : dotProd;
             }
-            if (max == 0)
-            {
-                max = 1;
-            }
+
             for (int i = 0; i < p.n; i += k)
             {
                 if (dotProds[i / k] >= 0 && p[i].Z > 0 && p[i + 1].Z > 0 && p[i + 2].Z > 0)
                 {
-                    float normilized = dotProds[i / k] / max;
-                    int color = (int)(45 + normilized * 210);
+                    int color = (int)(dotProds[i / k] * 200);
                     PointF[] point = new PointF[k];
                     for (int j = 0; j < k; j++)
                     {
