@@ -56,7 +56,7 @@ namespace cg_task3
             for (int i = 0; i < matrix.n; i++)
             {
                 float cos = n[i] * lightRay / (n[i].Size() * lightSize);
-                cosArr[i] = float.IsNaN(cos) ? 0 : 1;
+                cosArr[i] = float.IsNaN(cos) ? 0 : cos;
             }
             Matrix4 p = matrix * projecttion;
             for (int i = 0; i < p.n; i += K)
