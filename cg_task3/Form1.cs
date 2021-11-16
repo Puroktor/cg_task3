@@ -44,7 +44,7 @@ namespace cg_task3
 
             Matrix4 matrix = new Matrix4(points.GetMatrix()) * scaleT;
             matrix.AddLines(new float[,]{{ -2, 0, 0, 1 }, { 0, 0, 0, 1 } , { 2, 0, 0, 1 },
-                                        { 0, -2, 0, 1 }, { 0, 0, 0, 1 } , { 0, 1, 0, 1 },
+                                        { 0, -2, 0, 1 }, { 0, 0, 0, 1 } , { 0, 2, 0, 1 },
                                         { 0, 0, -2, 1 }, { 0, 0, 0, 1 } , { 0, 0, 2, 1 }});
 
             Vector3D lightRay = new Vector3D(0, 0, 0) - new Vector3D(lightX, lightY, lightZ);
@@ -55,7 +55,7 @@ namespace cg_task3
             float max = 0;
             for (int i = 0; i < p.n; i += k)
             {
-                Vector3D normal = (p[i + 1] - p[i]) ^ (p[i + 2] - p[i + 1]);
+                Vector3D normal = (p[i + 1] - p[i]) ^ (p[i + 2] - p[i]);
                 float dotProd = normal * lightRay;
                 dotProds[i / k] = dotProd;
                 max = Math.Max(max, dotProd);
